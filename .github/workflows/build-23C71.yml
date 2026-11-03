@@ -1,6 +1,9 @@
 name: Build 23C71
 
 on:
+  push:
+    branches:
+      - sonoma-23C71-surface
   workflow_dispatch:
 
 jobs:
