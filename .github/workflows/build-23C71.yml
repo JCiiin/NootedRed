@@ -1,0 +1,21 @@
+name: Build 23C71
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Release
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: "recursive"
+      - run: xcodebuild -version
+      - run: xcodebuild -configuration Release -arch x86_64 build
+      - name: Upload to Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: NootedRed-23C71-Release
+          path: build/Release/*.zip
