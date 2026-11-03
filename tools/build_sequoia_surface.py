@@ -25,11 +25,13 @@ def main():
     parser.add_argument('--cache', type=Path, required=True)
     parser.add_argument('--major', type=int, choices=(23, 24), default=24)
     parser.add_argument('--check', action='store_true', help='核对生成头，不写入生产数据')
+    parser.add_argument('--fixture', type=Path, help='其他构建号的核实夹具，默认 tools/fixtures/<system>-compat.json')
     args = parser.parse_args()
     system = 'sonoma' if args.major == 23 else 'sequoia'
     namespace = 'UserSonomaSurfaceData' if args.major == 23 else 'UserSequoiaSurfaceData'
     WORK = ROOT / f'build/{system}/surface'
-    profile = json.loads((ROOT / f'tools/fixtures/{system}-compat.json').read_text())
+    fixture = args.fixture or ROOT / f'tools/fixtures/{system}-compat.json'
+    profile = json.loads(fixture.read_text())
     WORK.mkdir(parents=True, exist_ok=True)
     cache = CacheReader(args.cache, profile['uuid'])
     try:
